@@ -5,7 +5,7 @@ Entity = Class:extend()
 -------------------------------
 
 function Entity:new(room, tag, x, y, z)
-    self.id    = uuid()
+    self.id    = tools.uuid()
     self.room  = room
     self.timer = Timer()
     self.tag   = tag or self.id

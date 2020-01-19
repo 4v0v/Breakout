@@ -5,7 +5,7 @@ Room = Class:extend()
 -------------------------------
 
 function Room:new(roomMgr, tag)
-    self.id    = uuid()
+    self.id    = tools.uuid()
     self.tag   = tag or self.id
     self.roomMgr = roomMgr
     self.timer = Timer()
