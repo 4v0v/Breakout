@@ -7,14 +7,19 @@ Main_Room = Room:extend("Main_Room")
 function Main_Room:new(roomMgr, tag)
     self.super.new(self, roomMgr, tag)
 
-    Pad(self, _, 300, 575, 200, 20)
-    Ball(self,_, 300, 555, 20, 20)
-    
-
-    for i = 1, 10 do 
-        Brick(self,_, 200, 200, 20, 20)
+    for i = 1, 5 do 
+        for j = 1, 10 do 
+            Brick(self,_, 70 * j, 40 * i, 60, 30) 
+        end
     end
 
+    Pad(self, _, 300, 550, 200, 20)
+    Ball(self,_, 300, 530, 20, 20)
+
+    Wall(self, _, 1, 0, 10, lg.getHeight() - 1)
+    Wall(self, _, lg.getWidth() - 10, 0, 10, lg.getHeight() - 1)
+    Wall(self, _, 0, 0, lg.getWidth(), 10)
+    Wall(self, _, 0, lg.getHeight()-11, lg.getWidth(), 10)
 end
 
 function Main_Room:update(dt)
