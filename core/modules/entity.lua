@@ -1,4 +1,4 @@
-Entity = Class:extend()
+Entity = Class:extend("Entity")
 
 -------------------------------
 -------------------------------

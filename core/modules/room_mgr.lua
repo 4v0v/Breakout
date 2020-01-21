@@ -1,4 +1,4 @@
-RoomMgr = Class:extend()
+RoomMgr = Class:extend("RoomMgr")
 
 -------------------------------
 -------------------------------

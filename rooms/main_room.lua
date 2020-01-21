@@ -1,4 +1,4 @@
-Main_Room = Room:extend()
+Main_Room = Room:extend("Main_Room")
 
 -------------------------------
 -------------------------------
@@ -7,18 +7,18 @@ Main_Room = Room:extend()
 function Main_Room:new(roomMgr, tag)
     self.super.new(self, roomMgr, tag)
 
-    Pad(self, _, 100, 100, 200, 20)
-    Ball(self,_, 50, 50, 20, 20)
+    Pad(self, _, 300, 575, 200, 20)
+    Ball(self,_, 300, 555, 20, 20)
     
 
-    self.un = Brick(self,_, 200, 200, 20, 20)
-    self.deux =  Brick(self,_, 215, 200, 20, 20)
+    for i = 1, 10 do 
+        Brick(self,_, 200, 200, 20, 20)
+    end
+
 end
 
 function Main_Room:update(dt)
     self.super.update(self, dt)
-    self.un.x = love.mouse.getX();
-    self.un.y = love.mouse.getY();
 end
 
 function Main_Room:draw()
@@ -29,11 +29,12 @@ function Main_Room:drawOutsideCamera()
 end
 
 function Main_Room:collision(r1, r2)
-
     if not (r1.x + r1.w >= r2.x and   
             r1.x <= r2.x + r2.w and   
             r1.y + r1.h >= r2.y and   
-            r1.y <= r2.y + r2.h) then return false end 
+            r1.y <= r2.y + r2.h) then 
+        return false 
+    end 
 
     local b_col = r2.y + r2.h - r1.y
     local t_col = r1.y + r1.h - r2.y
