@@ -36,5 +36,15 @@ function Room:draw()
     for _, entity in pairs(sort_table) do entity:draw() end
 end
 
-function Room:get_entity(tag) return self.entities[tag] end
+function Room:get(tag) return self.entities[tag] end
 function Room:is_entity(tag) return not not self.entities[tag] end
+
+function Room:foreach(entity_filter, func)
+
+    for _, entity in pairs(self.entities) do
+        for _, className in pairs(entity_filter) do 
+            if entity.className == className then func(entity) end
+        end
+    end
+
+end

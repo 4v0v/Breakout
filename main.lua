@@ -56,6 +56,8 @@ end
 
 function love.update(dt)
     main_room_mgr:update(dt)
+
+    if pressed("escape") then love.load() end
 end
 
 function love.draw()

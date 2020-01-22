@@ -18,6 +18,7 @@ function Entity:new(room, tag, x, y, z)
 end
 function Entity:update(dt) self.timer:update(dt) end
 function Entity:draw() end
+function Entity:destroy() self.dead = true end
 function Entity:is_dead() return self.dead end
 function Entity:on_death() end
 function Entity:get_id() return self.id end
