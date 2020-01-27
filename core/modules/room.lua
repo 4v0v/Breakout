@@ -40,11 +40,15 @@ function Room:get(tag) return self.entities[tag] end
 function Room:is_entity(tag) return not not self.entities[tag] end
 
 function Room:foreach(entity_filter, func)
-
     for _, entity in pairs(self.entities) do
         for _, className in pairs(entity_filter) do 
             if entity.className == className then func(entity) end
         end
     end
+end
 
+function Room:count(class)
+    local count = 0
+    self:foreach({class}, function() count = count + 1 end)
+    return count
 end

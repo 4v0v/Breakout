@@ -12,7 +12,6 @@ function love.run()
     require("core/modules/room_mgr")
     require("core/modules/room")
     require("core/modules/entity")
-
     tools.require("rooms")
     tools.require("entities")
     

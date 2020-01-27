@@ -41,17 +41,11 @@ local function _calc_tween(subject, target, out)
     end
     return out
 end
-local function _rand(time) 
-    if type(time) == 'number' then return time 
-    elseif type(time) == 'table' then 
-        local min, max = time[1] or 0, time[2] or 1 
-        return (min > max and (love.math.random()*(min - max) + max)) or (love.math.random()*(max - min) + min)
-    end 
+local function _rand(t) 
+    if type(t) == 'number' then return t 
+    elseif type(t) == 'table' then local x = (t[1] > t[2] and (love.math.random()*(t[1] - t[2]) + t[2])) or (love.math.random()*(t[2] -  t[1]) +  t[1])  print(x) return x end 
 end
-local function _uid()
-    local func = function() local r = math.random(16) return ("0123456789ABCDEF"):sub(r, r) end 
-    return ("xxxxxxxxxxxxxxxx"):gsub("[x]", func)
-end
+local function _uid() return ("xxxxxxxxxxxxxxxx"):gsub("[x]", function() local r = math.random(16) return ("0123456789ABCDEF"):sub(r, r) end) end
 --###########################--
 function Timer:update(dt)
     for tag, v in pairs(self.timers) do
