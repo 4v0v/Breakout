@@ -2,7 +2,6 @@ Entity = Class:extend("Entity")
 
 -------------------------------
 -------------------------------
--------------------------------
 
 function Entity:new(room, tag, x, y, z)
     self.id    = tools.uuid()

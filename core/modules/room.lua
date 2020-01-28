@@ -2,7 +2,6 @@ Room = Class:extend("Room")
 
 -------------------------------
 -------------------------------
--------------------------------
 
 function Room:new(roomMgr, tag)
     self.id    = tools.uuid()
@@ -42,7 +41,7 @@ function Room:is_entity(tag) return not not self.entities[tag] end
 function Room:foreach(entity_filter, func)
     for _, entity in pairs(self.entities) do
         for _, className in pairs(entity_filter) do 
-            if entity.className == className then func(entity) end
+            if entity.__class == className then func(entity) end
         end
     end
 end
