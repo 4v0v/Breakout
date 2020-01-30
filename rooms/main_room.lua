@@ -29,7 +29,10 @@ function Main_Room:update(dt)
         local coll, dir = self:collision(ball, entity)
         
         if coll and ball.state ~= "init" then
-            if entity.__class == "Brick" then entity:destroy() end
+            if entity.__class == "Brick" then 
+                camera:shake(50)
+                entity:kill() 
+            end
 
             if dir == "bottom" then ball:setYSpeed(-500) end
             if dir == "top"    then ball:setYSpeed(500)  end
@@ -39,6 +42,7 @@ function Main_Room:update(dt)
             if self:count("Brick") == 0 then 
                 for i = 1, 5 do for j = 1, 10 do Brick(self, _, 70 * j, 40 * i, 60, 30) end end
             end
+
         end
     end)
 end

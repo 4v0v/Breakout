@@ -1,13 +1,13 @@
 local Class = {}
 function Class:new() end
 function Class:extend(className) 
-    return setmetatable({
-        __super    = self,
-        __class    = className or "Object",
-        __tostring = self.__tostring,
-        __call     = self.__call,
-        __index    = obj
-    }, self)
+    local obj = {}
+        obj.__super    = self
+        obj.__class    = className or "Object"
+        obj.__tostring = self.__tostring
+        obj.__call     = self.__call
+        obj.__index    = obj
+    return setmetatable(obj, self)
 end
 function Class:__index(v) return Class[v] end
 function Class:__call(...) local obj = setmetatable({}, self) obj:new(...) return obj end

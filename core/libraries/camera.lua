@@ -45,16 +45,16 @@ function Camera:draw(func)
     lg.translate(-self.cam.x, -self.cam.y)
     lg.translate(self.shk.xrs, self.shk.yrs)
         func()
-        lg.circle("line", self.cam.tx, self.cam.ty, 10)
-        lg.line(self.cam.tx - 10, self.cam.ty, self.cam.tx + 10, self.cam.ty)
-        lg.line(self.cam.tx, self.cam.ty - 10, self.cam.tx, self.cam.ty + 10)
+        -- lg.circle("line", self.cam.tx, self.cam.ty, 10)
+        -- lg.line(self.cam.tx - 10, self.cam.ty, self.cam.tx + 10, self.cam.ty)
+        -- lg.line(self.cam.tx, self.cam.ty - 10, self.cam.tx, self.cam.ty + 10)
     lg.pop()
     lg.setScissor()
 
-    lg.rectangle("line", self.x, self.y, self.w, self.h)
-    lg.circle("line", cx, cy, 10)
-    lg.line(cx - 10, cy, cx + 10, cy)
-    lg.line(cx, cy - 10, cx, cy + 10)
+    -- lg.rectangle("line", self.x, self.y, self.w, self.h)
+    -- lg.circle("line", cx, cy, 10)
+    -- lg.line(cx - 10, cy, cx + 10, cy)
+    -- lg.line(cx, cy - 10, cx, cy + 10)
 end
 
 function Camera:shake(s, r, z) self.shk.s, self.shk.r, self.shk.z = s or 0 ,r or 0 ,z or 0 end
@@ -93,4 +93,4 @@ end
 
 function Camera:getMousePosition() return self:camToScreen(love.mouse.getPosition()) end
 
-return setmetatable({}, {__call = function(x, y, w, h, r, s) return Camera:new(x, y, w, h, r, s) end})
+return setmetatable({}, {__call = function(self, x, y, w, h, r, s) return Camera:new(x, y, w, h, r, s) end})
