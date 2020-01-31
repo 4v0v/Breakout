@@ -5,9 +5,10 @@ function love.run()
     function released(key) return _INPUT._PRE[key] and not _INPUT._CUR[key]  end
     function down(key) if key=="mouse_1"or key=="mouse_2"or key=="mouse_3"then return love.mouse.isDown(tonumber(key:sub(7))) end; return love.keyboard.isDown(key) end  
 
-    Timer = require("core/libraries/timer")
-    Class = require("core/libraries/class")
+    Timer  = require("core/libraries/timer")
+    Class  = require("core/libraries/class")
     Camera = require("core/libraries/camera")
+    vec2   = require("core/libraries/vector")
     require("core/libraries/tools")
     require("core/modules/room_mgr")
     require("core/modules/room")

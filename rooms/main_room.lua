@@ -31,6 +31,9 @@ function Main_Room:update(dt)
         if coll and ball.state ~= "init" then
             if entity.__class == "Brick" then 
                 camera:shake(50)
+                Trail(self, _, entity.x, entity.y)
+                Trail(self, _, entity.x, entity.y)
+                Trail(self, _, entity.x, entity.y)
                 entity:kill() 
             end
 
@@ -42,8 +45,11 @@ function Main_Room:update(dt)
             if self:count("Brick") == 0 then 
                 for i = 1, 5 do for j = 1, 10 do Brick(self, _, 70 * j, 40 * i, 60, 30) end end
             end
-
         end
+    end)
+
+    self:foreach("Trail", function(entity)
+        entity:set_target(pad.x + pad.w/2 , pad.y - pad.h/ 2)
     end)
 end
 
