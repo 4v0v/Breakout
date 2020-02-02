@@ -27,7 +27,7 @@ end
 function Ball:draw()
     local r,g,b,a = lg.getColor()
     lg.setColor(1,1,1)
-    lg.rectangle("fill", self.x, self.y, self.w, self.h)
+    lg.circle("fill", self.x + self.w/2, self.y + self.h/2, self.w/2)
     lg.setColor(r, g, b, a)
 end
 

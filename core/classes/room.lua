@@ -47,6 +47,7 @@ function Room:add(t, e)
     entity.__tag   = tag or entity:class() .. "_" .. entity.__id
     entity.__room  = self
     self.entity_queue[entity:tag()] = entity
+    return entity
 end
 
 function Room:get(tag) return self.entities[tag] end

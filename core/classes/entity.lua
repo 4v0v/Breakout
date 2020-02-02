@@ -17,6 +17,7 @@ end
 
 -------------------------------
 -------------------------------
+
 function Entity:init() end
 function Entity:update(dt) self.timer:update(dt) end
 function Entity:draw() end

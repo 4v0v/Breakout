@@ -28,29 +28,27 @@ function Main_Room:update(dt)
     if pressed("space") then self:get("ball"):launch(500, -500)  end
 
     self:foreach("Ball", function(ball)
-        self:foreach({"Wall", "Pad"}, function(entity)
+        self:foreach({"Wall", "Pad", "Brick"}, function(entity)
             local coll, dir = self:collision(ball, entity)
 
             if coll and ball.state ~= "init" then
-                if dir == "bottom" then ball:setYSpeed(-500) end
-                if dir == "top"    then ball:setYSpeed(500)  end
-                if dir == "left"   then ball:setXSpeed(500)  end
-                if dir == "right"  then ball:setXSpeed(-500) end
-            end
-        end)
 
-        self:foreach("Brick", function(brick)
-            local coll, dir = self:collision(ball, brick)
+                if entity:class() == "Wall" then 
+                    if entity:tag() == "left"   then entity.spring_x:pull(10) end
+                    if entity:tag() == "top"    then entity.spring_y:pull(10) end
+                    if entity:tag() == "right"  then entity.spring_x:pull(-10) end
+                    if entity:tag() == "bottom" then entity.spring_y:pull(-10) end
+                end
 
-            if coll and ball.state ~= "init" then
-                brick:kill()
+                if entity:class() == "Brick" then
+                    camera:shake(50)
+                    self:add(Physics_Brick(self.world, ball.xSpeed, ball.ySpeed, entity.x + entity.w/2, entity.y + entity.h/2, entity.w, entity.h))
+                    self:add(Trail(entity.x, entity.y))
+                    self:add(Trail(entity.x, entity.y))
+                    self:add(Trail(entity.x, entity.y))
+                    entity:kill()
+                end
 
-                camera:shake(50)
-                self:add(Physics_Brick(self.world, ball.xSpeed, ball.ySpeed, brick.x + brick.w/2, brick.y + brick.h/2, brick.w, brick.h))
-                self:add(Trail(brick.x, brick.y))
-                self:add(Trail(brick.x, brick.y))
-                self:add(Trail(brick.x, brick.y))
-                
                 if dir == "bottom" then ball:setYSpeed(-500) end
                 if dir == "top"    then ball:setYSpeed(500)  end
                 if dir == "left"   then ball:setXSpeed(500)  end
