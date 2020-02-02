@@ -3,14 +3,17 @@ Ball = Entity:extend("Ball")
 -------------------------------
 -------------------------------
 
-function Ball:new(room, tag, x, y, w, h)
-    self.__super.new(self, room, tag, x, y, 1)
+function Ball:new(x, y, w, h)
+    self.__super.new(self, x, y, 1)
     self.w = w
     self.h = h
     self.xSpeed = 0
     self.ySpeed = 0
     self.state = "init"
 end
+
+-------------------------------
+-------------------------------
 
 function Ball:update(dt)
     self.__super.update(self, dt)

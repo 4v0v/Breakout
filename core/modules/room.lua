@@ -5,20 +5,27 @@ Room = Class:extend("Room")
 
 function Room:new(roomMgr, tag)
     self.__id     = tools.uuid()
-    self.tag      = tag or self.__id
+    self.__tag    = tag or self.__id
     self.timer    = Timer()
     self.roomMgr  = roomMgr
     self.entities = {}
+    self.entity_queue = {}
     
-    self.roomMgr.rooms[self.tag] = self
+    self.roomMgr.rooms[self.__tag] = self
 end
 
 function Room:update(dt)
     self.timer:update(dt)
 
+    for tag, entity in pairs(self.entity_queue) do
+        self.entities[tag] = entity
+        entity:init()
+    end
+    self.entity_queue = {}
+
     for tag, entity in pairs(self.entities) do
         entity:update(dt)
-        if entity.dead then
+        if entity.__dead then
             entity.timer:destroy()
             entity = {}
             self.entities[tag] = nil
@@ -33,19 +40,28 @@ function Room:draw()
     for _, entity in pairs(sort_table) do entity:draw() end
 end
 
+function Room:add(t, e)
+    local tag, entity;
+    if type(t) == "table" then tag = nil; entity = t else tag = t; entity = e end
+    entity.__id    = tools.uuid()
+    entity.__tag   = tag or entity:class() .. "_" .. entity.__id
+    entity.__room  = self
+    self.entity_queue[entity:tag()] = entity
+end
+
 function Room:get(tag) return self.entities[tag] end
 function Room:is_entity(tag) return not not self.entities[tag] end
 
 function Room:foreach(filter, func)
     for _, entity in pairs(self.entities) do
         if type(filter) == "table" then 
-            for _, className in pairs(filter) do 
-                if entity.__class == className then func(entity) end
+            for _, class in pairs(filter) do 
+                if entity:class() == class then func(entity) end
             end
         elseif type(filter) == "string" and filter == "All" then 
             func(entity) 
         elseif type(filter) == "string" then 
-            if entity.__class == filter then func(entity) end
+            if entity:class() == filter then func(entity) end
         end
     end
 end

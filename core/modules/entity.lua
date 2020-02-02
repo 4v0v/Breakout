@@ -3,20 +3,24 @@ Entity = Class:extend("Entity")
 -------------------------------
 -------------------------------
 
-function Entity:new(room, tag, x, y, z)
-    self.__id  = tools.uuid()
-    self.tag   = tag or self.__id
+function Entity:new(x, y, z)
     self.timer = Timer()
-    self.room  = room
+    self.__id  = nil
+    self.__tag = nil
+    self.__room  = nil
+    self.__dead  = false
+
     self.x     = x or 0
     self.y     = y or 0
     self.z     = z or 0
-    self.dead  = false 
-
-    self.room.entities[self.tag] = self
 end
+
+-------------------------------
+-------------------------------
+function Entity:init() end
 function Entity:update(dt) self.timer:update(dt) end
 function Entity:draw() end
-function Entity:kill() self.dead = true end
-function Entity:get_id() return self.__id end
-function Entity:get_tag() return self.tag end
+function Entity:id() return self.__id end
+function Entity:tag() return self.__tag end
+function Entity:room() return self.__room end
+function Entity:kill() self.__dead = true end

@@ -9,7 +9,8 @@ function Class:extend(className)
         obj.__index    = obj
     return setmetatable(obj, self)
 end
+function Class:class() return self.__class end
 function Class:__index(v) return Class[v] end
 function Class:__call(...) local obj = setmetatable({}, self) obj:new(...) return obj end
-function Class:__tostring() return self.className end
+function Class:__tostring() return self:class() end
 return Class

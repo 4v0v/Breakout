@@ -43,7 +43,7 @@ local function _calc_tween(subject, target, out)
 end
 local function _rand(t) 
     if type(t) == 'number' then return t 
-    elseif type(t) == 'table' then local x = (t[1] > t[2] and (love.math.random()*(t[1] - t[2]) + t[2])) or (love.math.random()*(t[2] -  t[1]) +  t[1])  print(x) return x end 
+    elseif type(t) == 'table' then local x = (t[1] > t[2] and (love.math.random()*(t[1] - t[2]) + t[2])) or (love.math.random()*(t[2] -  t[1]) +  t[1]) return x end 
 end
 local function _uid() return ("xxxxxxxxxxxxxxxx"):gsub("[x]", function() local r = math.random(16) return ("0123456789ABCDEF"):sub(r, r) end) end
 --###########################--

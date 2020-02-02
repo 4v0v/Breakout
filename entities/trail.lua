@@ -3,8 +3,8 @@ Trail = Entity:extend("Trail")
 -------------------------------
 -------------------------------
 
-function Trail:new(room, tag, x, y)
-    self.__super.new(self, room, tag, x, y, 1)
+function Trail:new(x, y)
+    self.__super.new(self, x, y, 1)
 
     self.t              = vec2()
     self.pos            = vec2(x, y)
@@ -21,6 +21,12 @@ function Trail:new(room, tag, x, y)
         table.insert( self.trail, self.pos.x)
         table.insert( self.trail, self.pos.y)
     end
+end
+
+-------------------------------
+-------------------------------
+
+function Trail:init() 
     self.timer:after(0.1, function() self.move_speed = 100 end)
     self.timer:tween(1, self, {move_speed = 2000}, 'linear')
     self.timer:tween(0.5, self, {turn_speed = 20}, 'out-quad')
@@ -55,7 +61,10 @@ function Trail:update(dt)
     if self.begin_deletion == true then 
         table.remove( self.trail )
         table.remove( self.trail )
-        if #self.trail == 0 then self:kill() end
+        if #self.trail == 0 then 
+            self:room():add(Explosion_effect(self.pos.x, self.pos.y, love.math.random(100)))
+            self:kill() 
+        end
     end
 end
 

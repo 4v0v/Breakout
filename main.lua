@@ -1,7 +1,7 @@
 function love.run()
     local _DT, _F_DT, _ACC = 0, 1/60, 0
     local _INPUT = {_CUR = {}, _PRE = {}}
-    function pressed(key)  return _INPUT._CUR[key]  and not _INPUT._PRE[key] end
+    function pressed(key)  return _INPUT._CUR[key] and not _INPUT._PRE[key] end
     function released(key) return _INPUT._PRE[key] and not _INPUT._CUR[key]  end
     function down(key) if key=="mouse_1"or key=="mouse_2"or key=="mouse_3"then return love.mouse.isDown(tonumber(key:sub(7))) end; return love.keyboard.isDown(key) end  
 
@@ -9,6 +9,7 @@ function love.run()
     Class  = require("core/libraries/class")
     Camera = require("core/libraries/camera")
     vec2   = require("core/libraries/vector")
+    Physics = require("core/libraries/physics")
     require("core/libraries/tools")
     require("core/modules/room_mgr")
     require("core/modules/room")
@@ -19,6 +20,7 @@ function love.run()
     lg = love.graphics
     lg.setDefaultFilter("nearest", "nearest")
     lg.setLineStyle("rough")
+    love.keyboard.setKeyRepeat(true)
     --love.window.setMode( 800, 600, { vsync = true, x = 1111, y = 70 })
     love.load()
     love.timer.step()
@@ -30,7 +32,7 @@ function love.run()
             if name == "quit"          then if not love.quit or not love.quit() then return a or 0 end end
             if name == "mousepressed"  then _INPUT._CUR["mouse_".. c] = true            end
             if name == "mousereleased" then _INPUT._CUR["mouse_".. c] = false           end
-            if name == "keypressed"    then _INPUT._CUR[a]            = true            end
+            if name == "keypressed"    then _INPUT._CUR[a]            = true if c == true then _INPUT._PRE[a] = false  end  end -- isRepeat
             if name == "keyreleased"   then _INPUT._CUR[a]            = false           end
             love.handlers[name](a,b,c,d,e,f)
         end
@@ -54,14 +56,27 @@ function love.load()
     main_room_mgr = RoomMgr()
     Main_Room(main_room_mgr, "main_room")
     main_room_mgr:changeRoom("main_room")
+
+    play = true
+    mode = "play"
 end
 
 function love.update(dt)
-    camera:update(dt)
-    main_room_mgr:update(dt)
+    if play then 
+        camera:update(dt)
+        main_room_mgr:update(dt)
+    end
+    if mode == "frame" then play = false end
+
+    if pressed("1") then
+        if     mode == "play"  then mode = "frame"
+        elseif mode == "frame" then mode = "play"; play = true end
+    end
+    if pressed("2") then play = true end
 
     if pressed("escape") then love.load() end
 end
+
 
 function love.draw()
     camera:draw(function() 

@@ -3,11 +3,14 @@ Brick = Entity:extend("Brick")
 -------------------------------
 -------------------------------
 
-function Brick:new(room, tag, x, y, w, h)
-    self.__super.new(self, room, tag, x, y, 1)
+function Brick:new(x, y, w, h)
+    self.__super.new(self, x, y, 1)
     self.w = w
     self.h = h
 end
+
+-------------------------------
+-------------------------------
 
 function Brick:update(dt)
     self.__super.update(self, dt)

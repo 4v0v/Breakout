@@ -3,8 +3,8 @@ Wall = Entity:extend("Wall")
 -------------------------------
 -------------------------------
 
-function Wall:new(room, tag, x, y, w, h)
-    self.__super.new(self, room, tag, x, y, 1)
+function Wall:new(x, y, w, h)
+    self.__super.new(self, x, y, 1)
     self.w = w
     self.h = h
 end

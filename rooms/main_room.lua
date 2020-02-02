@@ -6,47 +6,62 @@ Main_Room = Room:extend("Main_Room")
 function Main_Room:new(roomMgr, tag)
     self.__super.new(self, roomMgr, tag)
 
-    Pad(self, "pad", 300, 550, 200, 20)
-    Ball(self, "ball", 300, 530, 20, 20)
-    Wall(self, "left", 1, 0, 10, lg.getHeight() - 1)
-    Wall(self, "right", lg.getWidth() - 10, 0, 10, lg.getHeight() - 1)
-    Wall(self, "top", 0, 0, lg.getWidth(), 10)
-    Wall(self, "bottom", 0, lg.getHeight()-11, lg.getWidth(), 10)
-    for i = 1, 5 do for j = 1, 10 do Brick(self, _, 70 * j, 40 * i, 60, 30) end end
+    self.world = Physics(0, 1500)
+
+    self:add("pad", Pad(300, 550, 200, 20))
+    self:add("ball", Ball(300, 530, 20, 20))
+    self:add("left", Wall(1, 0, 10, lg.getHeight() - 1))
+    self:add("right", Wall(lg.getWidth() - 10, 0, 10, lg.getHeight() - 1))
+    self:add("top", Wall(0, 0, lg.getWidth(), 10))
+    self:add("bottom", Wall(0, lg.getHeight()-11, lg.getWidth(), 10))
+    for i = 1, 5 do for j = 1, 10 do self:add(Brick( 70 * j, 40 * i, 60, 30)) end end
 end
 
 function Main_Room:update(dt)
     self.__super.update(self, dt)
+    self.world:update(dt)
 
     local pad = self:get("pad")
-    local ball = self:get("ball")
 
     if down("left") then pad:moveLeft(500, dt) end
     if down("right") then pad:moveRight(500, dt) end
-    if pressed("space") then ball:launch(500, -500)  end
+    if pressed("space") then self:get("ball"):launch(500, -500)  end
 
-    self:foreach({"Wall", "Pad", "Brick"}, function(entity) 
-        local coll, dir = self:collision(ball, entity)
-        
-        if coll and ball.state ~= "init" then
-            if entity.__class == "Brick" then 
+    self:foreach("Ball", function(ball)
+        self:foreach({"Wall", "Pad"}, function(entity)
+            local coll, dir = self:collision(ball, entity)
+
+            if coll and ball.state ~= "init" then
+                if dir == "bottom" then ball:setYSpeed(-500) end
+                if dir == "top"    then ball:setYSpeed(500)  end
+                if dir == "left"   then ball:setXSpeed(500)  end
+                if dir == "right"  then ball:setXSpeed(-500) end
+            end
+        end)
+
+        self:foreach("Brick", function(brick)
+            local coll, dir = self:collision(ball, brick)
+
+            if coll and ball.state ~= "init" then
+                brick:kill()
+
                 camera:shake(50)
-                Trail(self, _, entity.x, entity.y)
-                Trail(self, _, entity.x, entity.y)
-                Trail(self, _, entity.x, entity.y)
-                entity:kill() 
+                self:add(Physics_Brick(self.world, ball.xSpeed, ball.ySpeed, brick.x + brick.w/2, brick.y + brick.h/2, brick.w, brick.h))
+                self:add(Trail(brick.x, brick.y))
+                self:add(Trail(brick.x, brick.y))
+                self:add(Trail(brick.x, brick.y))
+                
+                if dir == "bottom" then ball:setYSpeed(-500) end
+                if dir == "top"    then ball:setYSpeed(500)  end
+                if dir == "left"   then ball:setXSpeed(500)  end
+                if dir == "right"  then ball:setXSpeed(-500) end
             end
-
-            if dir == "bottom" then ball:setYSpeed(-500) end
-            if dir == "top"    then ball:setYSpeed(500)  end
-            if dir == "left"   then ball:setXSpeed(500)  end
-            if dir == "right"  then ball:setXSpeed(-500) end
-
-            if self:count("Brick") == 0 then 
-                for i = 1, 5 do for j = 1, 10 do Brick(self, _, 70 * j, 40 * i, 60, 30) end end
-            end
-        end
+        end)
     end)
+
+    if self:count("Brick") == 0 then 
+        for i = 1, 5 do for j = 1, 10 do self:add(Brick( 70 * j, 40 * i, 60, 30)) end end
+    end
 
     self:foreach("Trail", function(entity)
         entity:set_target(pad.x + pad.w/2 , pad.y - pad.h/ 2)
@@ -55,6 +70,7 @@ end
 
 function Main_Room:draw()
     self.__super.draw(self)
+    self.world:draw()
 end
 
 function Main_Room:collision(r1, r2)
