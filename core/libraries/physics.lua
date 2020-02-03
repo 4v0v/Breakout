@@ -397,8 +397,8 @@ function Collider:destroy()
         v._fixture:setUserData(nil)
         v._fixture:destroy()
         v._fixture  = nil
-        v._shape    = nil
         v._collider = nil
+        v._shape    = nil
     end
     self._data = nil
     self._body:setUserData(nil)
