@@ -52,7 +52,7 @@ function love.load()
     camera = Camera(0, 0, 800, 600)
     camera:setPosition(400, 300)
     main_room_mgr = RoomMgr()
-    Main_Room(main_room_mgr, "main_room")
+    main_room_mgr:add("main_room", Main_Room())
     main_room_mgr:changeRoom("main_room")
 
     play = true
@@ -74,7 +74,6 @@ function love.update(dt)
 
     if pressed("escape") then love.load() end
 end
-
 
 function love.draw()
     camera:draw(function() 

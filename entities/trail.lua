@@ -62,7 +62,7 @@ function Trail:update(dt)
         table.remove( self.trail )
         table.remove( self.trail )
         if #self.trail == 0 then 
-            self:room():add(Explosion_effect(self.pos.x, self.pos.y, love.math.random(100)))
+            -- self:room():add(Explosion_effect(self.pos.x, self.pos.y, love.math.random(100)))
             self:kill() 
         end
     end

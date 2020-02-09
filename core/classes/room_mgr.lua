@@ -18,6 +18,17 @@ function RoomMgr:draw()
     self.rooms[self.currentRoom]:draw()
 end
 
+function RoomMgr:add(t, r)
+    local tag, room
+    if type(t) == "table" then tag = nil; room = t else tag = t; room = r end
+    room.__id  = tools.uuid()
+    room.__tag = tag or room:class() .. "_" .. room.__id
+    room.__mgr = self
+
+    self.rooms[tag] = room
+    return room
+end
+
 function RoomMgr:changeRoom(tag)
     local prevRoom, nextRoom = self.currentRoom, tag
     self.currentRoom = tag

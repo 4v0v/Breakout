@@ -3,58 +3,56 @@ Room = Class:extend("Room")
 -------------------------------
 -------------------------------
 
-function Room:new(roomMgr, tag)
-    self.__id     = tools.uuid()
-    self.__tag    = tag or self.__id
-    self.timer    = Timer()
-    self.roomMgr  = roomMgr
-    self.entities = {}
-    self.entity_queue = {}
-    
-    self.roomMgr.rooms[self.__tag] = self
+function Room:new()
+    self.timer   = Timer()
+    self.__id    = nil
+    self.__tag   = nil
+    self.__mgr   = nil
+    self.__queue = {}
+    self.__ents  = {}
 end
 
 function Room:update(dt)
     self.timer:update(dt)
 
-    for tag, entity in pairs(self.entity_queue) do
-        self.entities[tag] = entity
+    for tag, entity in pairs(self.__queue) do
+        self.__ents[tag] = entity
         entity:init()
     end
-    self.entity_queue = {}
+    self.__queue = {}
 
-    for tag, entity in pairs(self.entities) do
+    for tag, entity in pairs(self.__ents) do
         entity:update(dt)
         if entity.__dead then
             entity.timer:destroy()
             entity = {}
-            self.entities[tag] = nil
+            self.__ents[tag] = nil
         end
     end
 end
 
 function Room:draw()
     local sort_table = {}
-    for _, entity in pairs(self.entities) do table.insert(sort_table, entity) end
+    for _, entity in pairs(self.__ents) do table.insert(sort_table, entity) end
     table.sort(sort_table, function(a, b) if a.z == b.z then return a.__id < b.__id else return a.z < b.z end end)
     for _, entity in pairs(sort_table) do entity:draw() end
 end
 
 function Room:add(t, e)
-    local tag, entity;
+    local tag, entity
     if type(t) == "table" then tag = nil; entity = t else tag = t; entity = e end
     entity.__id    = tools.uuid()
     entity.__tag   = tag or entity:class() .. "_" .. entity.__id
     entity.__room  = self
-    self.entity_queue[entity:tag()] = entity
+    self.__queue[entity:tag()] = entity
     return entity
 end
 
-function Room:get(tag) return self.entities[tag] end
-function Room:is_entity(tag) return not not self.entities[tag] end
+function Room:get(tag) return self.__ents[tag] end
+function Room:is_entity(tag) return not not self.__ents[tag] end
 
 function Room:foreach(filter, func)
-    for _, entity in pairs(self.entities) do
+    for _, entity in pairs(self.__ents) do
         if type(filter) == "table" then 
             for _, class in pairs(filter) do 
                 if entity:class() == class then func(entity) end

@@ -4,11 +4,11 @@ Entity = Class:extend("Entity")
 -------------------------------
 
 function Entity:new(x, y, z)
-    self.timer = Timer()
-    self.__id  = nil
-    self.__tag = nil
-    self.__room  = nil
-    self.__dead  = false
+    self.timer  = Timer()
+    self.__id   = nil
+    self.__tag  = nil
+    self.__room = nil
+    self.__dead = false
 
     self.x     = x or 0
     self.y     = y or 0

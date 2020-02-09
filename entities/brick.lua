@@ -32,5 +32,4 @@ function Brick:draw()
     lg.rectangle("line", self.x - self.sine_scale:value(), self.y - self.sine_scale:value(), self.w + self.sine_scale:value()* 2, self.h + self.sine_scale:value()* 2)
     lg.pop()
     lg.setColor(r, g, b, a)
-
 end
