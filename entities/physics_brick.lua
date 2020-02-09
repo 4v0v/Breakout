@@ -17,8 +17,8 @@ end
 
 function Physics_Brick:init()
     self.collider = self.world:addRectangle(self.x, self.y, self.w, self.h):setColor(0, 1, 0)
-    self.collider:applyLinearImpulse(self.xspeed, self.yspeed * 2)
-    self.collider:applyAngularImpulse(self.xspeed * love.math.random(3))
+    self.collider:applyLinearImpulse(self.xspeed, self.yspeed * tools.random{2, 3})
+    self.collider:applyAngularImpulse(self.xspeed * love.math.random(7))
     self.timer:after(3, function() self.collider:destroy(); self:kill() end)
 end
 

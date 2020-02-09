@@ -10,9 +10,9 @@ function Entity:new(x, y, z)
     self.__room = nil
     self.__dead = false
 
-    self.x     = x or 0
-    self.y     = y or 0
-    self.z     = z or 0
+    self.x = x or 0
+    self.y = y or 0
+    self.z = z or 0
 end
 
 -------------------------------

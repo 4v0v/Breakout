@@ -52,8 +52,9 @@ function love.load()
     camera = Camera(0, 0, 800, 600)
     camera:setPosition(400, 300)
     main_room_mgr = RoomMgr()
-    main_room_mgr:add("main_room", Main_Room())
-    main_room_mgr:changeRoom("main_room")
+    main_room_mgr:add("play_room", Play_Room())
+    main_room_mgr:add("menu_room", Menu_Room())
+    main_room_mgr:changeRoom("play_room")
 
     play = true
     mode = "play"

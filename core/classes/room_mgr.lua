@@ -29,7 +29,9 @@ function RoomMgr:add(t, r)
     return room
 end
 
-function RoomMgr:changeRoom(tag)
+function RoomMgr:changeRoom(tag, ...)
     local prevRoom, nextRoom = self.currentRoom, tag
+    if prevRoom then self.rooms[prevRoom]:leave({...}) end
     self.currentRoom = tag
+    self.rooms[nextRoom]:enter({...})
 end

@@ -1,9 +1,9 @@
-Main_Room = Room:extend("Main_Room")
+Play_Room = Room:extend("Play_Room")
 
 -------------------------------
 -------------------------------
 
-function Main_Room:new(roomMgr, tag)
+function Play_Room:new(roomMgr, tag)
     self.__super.new(self, roomMgr, tag)
 
     self.world = Physics(0, 1500)
@@ -17,7 +17,7 @@ function Main_Room:new(roomMgr, tag)
     for i = 1, 5 do for j = 1, 10 do self:add(Brick( 70 * j, 40 * i, 60, 30)) end end
 end
 
-function Main_Room:update(dt)
+function Play_Room:update(dt)
     self.__super.update(self, dt)
     self.world:update(dt)
 
@@ -43,9 +43,9 @@ function Main_Room:update(dt)
                 if entity:class() == "Brick" then
                     camera:shake(50)
                     self:add(Physics_Brick(self.world, ball.xSpeed, ball.ySpeed, entity.x + entity.w/2, entity.y + entity.h/2, entity.w, entity.h))
-                    self:add(Trail(entity.x, entity.y))
-                    self:add(Trail(entity.x, entity.y))
-                    self:add(Trail(entity.x, entity.y))
+                    -- self:add(Trail(entity.x, entity.y))
+                    -- self:add(Trail(entity.x, entity.y))
+                    -- self:add(Trail(entity.x, entity.y))
                     entity:kill()
                 end
 
@@ -66,12 +66,12 @@ function Main_Room:update(dt)
     end)
 end
 
-function Main_Room:draw()
+function Play_Room:draw()
     self.__super.draw(self)
     self.world:draw()
 end
 
-function Main_Room:collision(r1, r2)
+function Play_Room:collision(r1, r2)
     if not (r1.x + r1.w >= r2.x and   
             r1.x <= r2.x + r2.w and   
             r1.y + r1.h >= r2.y and   

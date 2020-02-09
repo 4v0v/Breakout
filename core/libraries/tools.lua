@@ -17,3 +17,14 @@ function tools.require(path)
         elseif love.filesystem.getInfo(path .. "/" .. v).type == "directory" then recursive_require(path .. "/" .. v) end
     end
 end
+function tools.random(x, y)
+    if type(x) == "table" then
+        return x[love.math.random(#x)]  
+    elseif type(x) == "number" and y == nil then 
+        if x % math.floor(x) ~= 0 then return love.math.random(x * 1000) / 1000 else return love.math.random(x) end
+    elseif type(x) == "number" and type(y) == "number" then 
+        if x % math.floor(x) ~= 0 or y % math.floor(y) ~= 0 then return love.math.random(x*1000, y*1000) / 1000 else return love.math.random(x, y) end
+    elseif x == nil and y == nil then 
+        return love.math.random()
+    end
+end

@@ -50,6 +50,9 @@ end
 
 function Room:get(tag) return self.__ents[tag] end
 function Room:is_entity(tag) return not not self.__ents[tag] end
+function Room:enter() end 
+function Room:leave() end
+function Room:mgr() return self.__mgr end
 
 function Room:foreach(filter, func)
     for _, entity in pairs(self.__ents) do
