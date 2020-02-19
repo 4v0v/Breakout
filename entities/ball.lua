@@ -18,8 +18,8 @@ end
 function Ball:update(dt)
     self.__super.update(self, dt)
 
-    if self.state == "launched" then 
-        self.x = self.x + self.xSpeed * dt 
+    if self.state == "launched" then
+        self.x = self.x + self.xSpeed * dt
         self.y = self.y + self.ySpeed * dt
     end
 end

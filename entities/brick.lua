@@ -3,6 +3,11 @@ Brick = Entity:extend("Brick")
 -------------------------------
 -------------------------------
 
+Brick.bounce_sound = love.audio.newSource('assets/sounds/bump.wav', 'static')
+
+-------------------------------
+-------------------------------
+
 function Brick:new(x, y, w, h)
     self.__super.new(self, x, y, 1)
     self.w = w
