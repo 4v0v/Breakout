@@ -43,14 +43,14 @@ function Play_Room:update(dt)
                 if entity:class() == "Brick" then
                     camera:shake(50)
                     self:add(Physics_Brick(self.world, ball.xSpeed, ball.ySpeed, entity.x + entity.w/2, entity.y + entity.h/2, entity.w, entity.h))
+                    entity.p_system:emit(50)
 
-                    local snd = entity.bounce_sound:clone()
                     
-                    love.audio.play(snd)
+                    love.audio.play(entity.bounce_sound:clone())
                     -- self:add(Trail(entity.x, entity.y))
                     -- self:add(Trail(entity.x, entity.y))
                     -- self:add(Trail(entity.x, entity.y))
-                    entity:kill()
+                    -- entity:kill()
                 end
 
                 if dir == "bottom" then ball:setYSpeed(-500) end

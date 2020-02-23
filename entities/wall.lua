@@ -24,6 +24,6 @@ end
 function Wall:draw()
     local r,g,b,a = lg.getColor()
     lg.setColor(0,1,1)
-    lg.rectangle("line", self.spring_x:value(), self.spring_y:value(), self.w, self.h)
+    lg.rectangle("fill", self.spring_x:value(), self.spring_y:value(), self.w, self.h)
     lg.setColor(r, g, b, a)
 end
