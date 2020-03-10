@@ -3,7 +3,6 @@ Brick = Entity:extend("Brick")
 -------------------------------
 -------------------------------
 
-Brick.particle_img = love.graphics.newImage("assets/images/square.png")
 Brick.bounce_sound = love.audio.newSource('assets/sounds/bump.wav', 'static')
 
 -------------------------------
@@ -49,6 +48,4 @@ function Brick:draw()
     lg.rectangle("line", self.x - self.sine_scale:value(), self.y - self.sine_scale:value(), self.w + self.sine_scale:value()* 2, self.h + self.sine_scale:value()* 2)
     lg.pop()
     lg.setColor(r, g, b, a)
-
-    love.graphics.draw(self.p_system, self.x+self.w/2, self.y+ self.h/2)
 end
