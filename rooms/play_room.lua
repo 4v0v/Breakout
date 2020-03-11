@@ -4,7 +4,7 @@ Play_Room = Room:extend("Play_Room")
 -------------------------------
 
 function Play_Room:new(roomMgr, tag)
-    self.__super.new(self, roomMgr, tag)
+    Play_Room.__super.new(self, roomMgr, tag)
 
     self.world = Physics(0, 1500)
 
@@ -18,7 +18,7 @@ function Play_Room:new(roomMgr, tag)
 end
 
 function Play_Room:update(dt)
-    self.__super.update(self, dt)
+    Play_Room.__super.update(self, dt)
     self.world:update(dt)
 
     local pad = self:get("pad")
@@ -43,14 +43,13 @@ function Play_Room:update(dt)
                 if entity:class() == "Brick" then
                     camera:shake(50)
                     self:add(Physics_Brick(self.world, ball.xSpeed, ball.ySpeed, entity.x + entity.w/2, entity.y + entity.h/2, entity.w, entity.h))
-                    entity.p_system:emit(50)
-
                     
+                    self:add(Brick_Particles(entity.x + entity.w/2, entity.y + entity.h/2))
                     love.audio.play(entity.bounce_sound:clone())
                     -- self:add(Trail(entity.x, entity.y))
                     -- self:add(Trail(entity.x, entity.y))
                     -- self:add(Trail(entity.x, entity.y))
-                    -- entity:kill()
+                    entity:kill()
                 end
 
                 if dir == "bottom" then ball:setYSpeed(-500) end
@@ -71,7 +70,7 @@ function Play_Room:update(dt)
 end
 
 function Play_Room:draw()
-    self.__super.draw(self)
+    Play_Room.__super.draw(self)
     self.world:draw()
 end
 

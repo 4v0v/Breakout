@@ -13,8 +13,7 @@ function tools.angle(x1, y1, x2, y2) return math_atan2(y2 - y1, x2 - x1) end
 function tools.distance(x1, y1, x2, y2, squared) local dx, dy = x1 - x2, y1 - y2 local s = dx * dx + dy * dy return squared and s or math_sqrt(s) end
 function tools.require(path)
     for _,v in pairs(love.filesystem.getDirectoryItems(path)) do
-        if love.filesystem.getInfo(path .. "/" .. v).type == "file" then require(path .. "/" .. v:gsub(".lua", ""))
-        elseif love.filesystem.getInfo(path .. "/" .. v).type == "directory" then recursive_require(path .. "/" .. v) end
+        if love.filesystem.getInfo(path .. "/" .. v).type == "file" then require(path .. "/" .. v:gsub(".lua", "")) end
     end
 end
 function tools.random(x, y)

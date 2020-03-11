@@ -4,7 +4,7 @@ Physics_Brick = Entity:extend("Physics_Brick")
 -------------------------------
 
 function Physics_Brick:new(world, xspeed, yspeed, x, y, w, h)
-    self.__super.new(self, x, y, 1)
+    Physics_Brick.__super.new(self, x, y, 1)
     self.world = world
     self.xspeed = xspeed
     self.yspeed = yspeed
@@ -23,7 +23,7 @@ function Physics_Brick:init()
 end
 
 function Physics_Brick:update(dt)
-    self.__super.update(self, dt)
+    Physics_Brick.__super.update(self, dt)
 end
 
 function Physics_Brick:draw()

@@ -1,26 +1,21 @@
-Particle = Entity:extend("Particle")
-
-Particle.particle_img = love.graphics.newImage("assets/images/square.png")
+Particles = Entity:extend("Particles")
 
 -------------------------------
 -------------------------------
 
-function Particle:new(x, y, w, h)
-    self.__super.new(self, x, y, 1)
-    self.w = w
-    self.h = h
-    self.p_system = love.graphics.newParticleSystem(self.particle_img)
+function Particles:new(x, y, img)
+    Particles.__super.new(self, x, y, 1)
+    self.particles = love.graphics.newParticleSystem(img)
 end
 
 -------------------------------
 -------------------------------
 
-function Particle:update(dt)
-    self.__super.update(self, dt)
-
-    self.p_system:update(dt)
+function Particles:update(dt)
+    Particles.__super.update(self, dt)
+    self.particles:update(dt)
 end
 
-function Particle:draw()
-    love.graphics.draw(self.p_system, self.x, self.y)
+function Particles:draw()
+    love.graphics.draw(self.particles, self.x, self.y)
 end

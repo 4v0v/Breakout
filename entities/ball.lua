@@ -4,7 +4,7 @@ Ball = Entity:extend("Ball")
 -------------------------------
 
 function Ball:new(x, y, w, h)
-    self.__super.new(self, x, y, 1)
+    Ball.__super.new(self, x, y, 1)
     self.w = w
     self.h = h
     self.xSpeed = 0
@@ -16,7 +16,7 @@ end
 -------------------------------
 
 function Ball:update(dt)
-    self.__super.update(self, dt)
+    Ball.__super.update(self, dt)
 
     if self.state == "launched" then
         self.x = self.x + self.xSpeed * dt

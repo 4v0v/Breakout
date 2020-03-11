@@ -5,7 +5,7 @@ Wall = Entity:extend("Wall")
 -------------------------------
 
 function Wall:new(x, y, w, h)
-    self.__super.new(self, x, y, 1)
+    Wall.__super.new(self, x, y, 1)
     self.w = w
     self.h = h
     self.spring_x = Spring(self.x)
@@ -16,7 +16,7 @@ end
 -------------------------------
 
 function Wall:update(dt)
-    self.__super.update(self, dt)
+    Wall.__super.update(self, dt)
     self.spring_x:update(dt)
     self.spring_y:update(dt)
 end

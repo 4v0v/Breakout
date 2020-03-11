@@ -14,6 +14,7 @@ function love.run()
     tools.require("core/classes")
     tools.require("rooms")
     tools.require("entities")
+    tools.require("entities/particles")
     
     lg = love.graphics
     lg.setDefaultFilter("nearest", "nearest")
