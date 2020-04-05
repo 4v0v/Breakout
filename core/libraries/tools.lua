@@ -27,3 +27,6 @@ function tools.random(x, y)
         return love.math.random()
     end
 end
+
+function tools.pointRect(x, y, rx, ry, rw, rh) return x >= rx and x <= rx + rw and y >= ry and y <= ry + rh end
+function tools.rectRect(x1, y1, w1, h1, x2, y2, w2, h2) return x1 + w1 >= x2 and x1 <= x2 + w2 and  y1 + h1 >= y2 and  y1 <= y2 + h2 end

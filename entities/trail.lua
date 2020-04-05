@@ -4,7 +4,7 @@ Trail = Entity:extend("Trail")
 -------------------------------
 
 function Trail:new(x, y)
-    Trail.__super.new(self, x, y, 1)
+    Trail:super().new(self, x, y, 1)
 
     self.t              = vec2()
     self.pos            = vec2(x, y)
@@ -34,7 +34,7 @@ function Trail:init()
 end
 
 function Trail:update(dt)
-    Trail.__super.update(self, dt)
+    Trail:super().update(self, dt)
 
     self.target = (self.t - self.pos):normalize()
     local steering = self.target - self.vel

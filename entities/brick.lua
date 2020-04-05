@@ -3,13 +3,8 @@ Brick = Entity:extend("Brick")
 -------------------------------
 -------------------------------
 
-Brick.bounce_sound = love.audio.newSource('assets/sounds/bump.wav', 'static')
-
--------------------------------
--------------------------------
-
 function Brick:new(x, y, w, h)
-    Brick.__super.new(self, x, y, 1)
+    Brick:super().new(self, x, y, 1)
     self.w = w
     self.h = h
     self.sine_scale = Sinewave(1, 3, 3)
@@ -24,7 +19,7 @@ function Brick:init()
 end
 
 function Brick:update(dt)
-    Brick.__super.update(self, dt)
+    Brick:super().update(self, dt)
     self.sine_scale:update(dt)
 end
 

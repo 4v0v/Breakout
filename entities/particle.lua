@@ -4,7 +4,7 @@ Particles = Entity:extend("Particles")
 -------------------------------
 
 function Particles:new(x, y, img)
-    Particles.__super.new(self, x, y, 1)
+    Particles:super().new(self, x, y, 1)
     self.particles = love.graphics.newParticleSystem(img)
 end
 
@@ -12,7 +12,7 @@ end
 -------------------------------
 
 function Particles:update(dt)
-    Particles.__super.update(self, dt)
+    Particles:super().update(self, dt)
     self.particles:update(dt)
 end
 

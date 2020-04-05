@@ -4,7 +4,7 @@ Ball = Entity:extend("Ball")
 -------------------------------
 
 function Ball:new(x, y, w, h)
-    Ball.__super.new(self, x, y, 1)
+    Ball:super().new(self, x, y, 1)
     self.w = w
     self.h = h
     self.xSpeed = 0
@@ -16,7 +16,7 @@ end
 -------------------------------
 
 function Ball:update(dt)
-    Ball.__super.update(self, dt)
+    Ball:super().update(self, dt)
 
     if self.state == "launched" then
         self.x = self.x + self.xSpeed * dt
@@ -29,6 +29,17 @@ function Ball:draw()
     lg.setColor(1,1,1)
     lg.circle("fill", self.x + self.w/2, self.y + self.h/2, self.w/2)
     lg.setColor(r, g, b, a)
+end
+
+-------------------------------
+-------------------------------
+
+function Ball:moveRight(speed, dt)
+    self.x = self.x + speed * dt
+end
+
+function Ball:moveLeft(speed, dt)
+    self.x = self.x - speed * dt
 end
 
 function Ball:setXSpeed(speed) self.xSpeed = speed end

@@ -20,6 +20,12 @@ function love.run()
     lg.setDefaultFilter("nearest", "nearest")
     lg.setLineStyle("rough")
     love.keyboard.setKeyRepeat(true)
+    fixedsys = love.graphics.newFont('assets/fonts/fixedsys.ttf', 18, 'mono')
+    lg.setFont(fixedsys)
+
+    WIDTH = lg.getWidth()
+    HEIGHT = lg.getHeight()
+    
     --love.window.setMode( 800, 600, { vsync = true, x = 1111, y = 70 })
     love.load()
     love.timer.step()
@@ -52,11 +58,17 @@ end
 function love.load()
     camera = Camera(0, 0, 800, 600)
     camera:setPosition(400, 300)
-    main_room_mgr = RoomMgr()
-    main_room_mgr:add("play_room", Play_Room())
-    main_room_mgr:add("menu_room", Menu_Room())
-    main_room_mgr:changeRoom("play_room")
+    room_mgr = RoomMgr()
+    room_mgr:add("menu_room", Menu_Room())
+    room_mgr:add("option_room", Option_Room())
+    room_mgr:add("seeyou_room", Seeyou_Room())
+    room_mgr:add("highscore_room", Highscore_Room())
+    room_mgr:add("play_room", Play_Room())
+    room_mgr:changeRoom("menu_room")
 
+
+    switch_sound = love.audio.newSource('assets/sounds/switch.wav', 'static')
+    back_sound = love.audio.newSource('assets/sounds/back.wav', 'static')
     play = true
     mode = "play"
 end
@@ -64,7 +76,7 @@ end
 function love.update(dt)
     if play then 
         camera:update(dt)
-        main_room_mgr:update(dt)
+        room_mgr:update(dt)
     end
     if mode == "frame" then play = false end
 
@@ -79,6 +91,6 @@ end
 
 function love.draw()
     camera:draw(function() 
-        main_room_mgr:draw()
+        room_mgr:draw()
     end)
 end

@@ -4,7 +4,7 @@ Explosion_effect = Entity:extend("Explosion_effect")
 -------------------------------
 
 function Explosion_effect:new(x, y, radius, args)
-    Explosion_effect.__super.new(self, x, y, z, args)
+    Explosion_effect:super().new(self, x, y, z, args)
 
     self.target_radius = radius
     self.radius = 0
@@ -25,7 +25,7 @@ function Explosion_effect:init()
 end
 
 function Explosion_effect:update(dt)
-    Explosion_effect.__super.update(self, dt)
+    Explosion_effect:super().update(self, dt)
 end
 
 function Explosion_effect:draw()
