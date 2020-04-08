@@ -1,7 +1,7 @@
 Explosion_effect = Entity:extend("Explosion_effect")
 
--------------------------------
--------------------------------
+
+
 
 function Explosion_effect:new(x, y, radius, args)
     Explosion_effect:super().new(self, x, y, z, args)
@@ -11,8 +11,8 @@ function Explosion_effect:new(x, y, radius, args)
     self.radius2 = 0
 end
 
--------------------------------
--------------------------------
+
+
 
 function Explosion_effect:init()
     self.timer:script(function(wait)

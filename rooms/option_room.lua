@@ -1,8 +1,5 @@
 Option_Room = Room:extend("Option_Room")
 
--------------------------------
--------------------------------
-
 function Option_Room:new()
     Option_Room:super().new(self)
 
@@ -25,7 +22,7 @@ function Option_Room:update(dt)
         love.audio.play(switch_sound:clone())
     end
 
-    if pressed("return") then 
+    if pressed("return") or pressed("space") then 
         if self.selection == 1 then end
         if self.selection == 2 then end
         if self.selection == 3 then 

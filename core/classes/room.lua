@@ -1,7 +1,7 @@
 Room = Class:extend("Room")
 
--------------------------------
--------------------------------
+
+
 
 function Room:new()
     self.timer   = Timer()

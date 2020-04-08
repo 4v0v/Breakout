@@ -1,7 +1,7 @@
 Sinewave = Class:extend("Sinewave")
 
--------------------------------
--------------------------------
+
+
 
 function Sinewave:new(value, speed, amplitude)
     self.val   = value or 0
@@ -13,8 +13,8 @@ function Sinewave:new(value, speed, amplitude)
     self.state = true
 end
 
--------------------------------
--------------------------------
+
+
 
 function Sinewave:update(dt)
     if self.state then 

@@ -31,9 +31,9 @@ local _set_funcs = function(a, ...)
     for _, arg in pairs(args) do for k, v in pairs(arg.__index) do if not _f[k] then a[k] = function(a, ...) return v(arg, ...) end end end end
 end
 
--------------------------------
+
 --  <°)))>< <°)))>< <°)))><  --
--------------------------------
+
 
 function World:new(xg, yg, sleep)
     local function _callback(callback, fix1, fix2, contact, ...)
@@ -300,9 +300,9 @@ function World:destroy()
     for k,v in pairs(self) do v = nil end
 end
 
--------------------------------
+
 --  <°)))>< <°)))>< <°)))><  --
--------------------------------
+
 
 function Collider:setClass(class)
     local class = class or "Default"
@@ -406,9 +406,9 @@ function Collider:destroy()
     self._body = nil
 end
 
--------------------------------
+
 --  <°)))>< <°)))>< <°)))><  --
--------------------------------
+
 
 function Shape:setEnter(fn)     self._enter = fn return self end
 function Shape:setExit(fn)      self._exit  = fn return self end
@@ -423,8 +423,8 @@ function Shape:getCTag()     return self._collider._tag   end
 function Shape:getTag()      return self._tag             end
 function Shape:destroy() self._collider:remove_shape(self._tag) end
 
--------------------------------
+
 --  <°)))>< <°)))>< <°)))><  --
--------------------------------
+
 
 return setmetatable({}, {__call = World.new})

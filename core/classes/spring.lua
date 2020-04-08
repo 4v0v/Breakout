@@ -1,7 +1,7 @@
 Spring = Class:extend("Spring")
 
--------------------------------
--------------------------------
+
+
 
 function Spring:new(value, k, d)
     self.target_val = value
@@ -12,8 +12,8 @@ function Spring:new(value, k, d)
     self.v = 0
 end
 
--------------------------------
--------------------------------
+
+
 
 function Spring:update(dt)
     local  temp_value = self.val - self.target_val

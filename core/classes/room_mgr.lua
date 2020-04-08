@@ -1,7 +1,7 @@
 RoomMgr = Class:extend("RoomMgr")
 
--------------------------------
--------------------------------
+
+
 
 function RoomMgr:new()
     self.rooms = {}

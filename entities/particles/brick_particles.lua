@@ -1,12 +1,12 @@
 Brick_Particles = Particles:extend("Brick_Particles")
 
--------------------------------
--------------------------------
+
+
 
 Brick_Particles.particle_img = love.graphics.newImage("assets/images/square.png")
 
--------------------------------
--------------------------------
+
+
 
 function Brick_Particles:new(x, y)
     Brick_Particles:super().new(self, x, y, Brick_Particles.particle_img)
@@ -23,8 +23,8 @@ function Brick_Particles:init()
     self.timer:after(5, function() self:kill() end)
 end
 
--------------------------------
--------------------------------
+
+
 
 function Brick_Particles:update(dt)
     Brick_Particles:super().update(self, dt)

@@ -1,7 +1,7 @@
 Trail = Entity:extend("Trail")
 
--------------------------------
--------------------------------
+
+
 
 function Trail:new(x, y)
     Trail:super().new(self, x, y, 1)
@@ -23,8 +23,8 @@ function Trail:new(x, y)
     end
 end
 
--------------------------------
--------------------------------
+
+
 
 function Trail:init() 
     self.timer:after(0.1, function() self.move_speed = 100 end)

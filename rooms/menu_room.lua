@@ -1,7 +1,7 @@
 Menu_Room = Room:extend("Menu_Room")
 
--------------------------------
--------------------------------
+
+
 
 function Menu_Room:new()
     Menu_Room:super().new(self)
@@ -24,7 +24,7 @@ function Menu_Room:update(dt)
         love.audio.play(switch_sound:clone())
     end
 
-    if pressed("return") then 
+    if pressed("return") or pressed("space") then 
         if self.selection == 1 then room_mgr:changeRoom("play_room") end
         if self.selection == 2 then room_mgr:changeRoom("option_room") end
         if self.selection == 3 then room_mgr:changeRoom("highscore_room") end

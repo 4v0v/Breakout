@@ -1,7 +1,7 @@
 Ball = Entity:extend("Ball")
 
--------------------------------
--------------------------------
+
+
 
 function Ball:new(x, y, w, h)
     Ball:super().new(self, x, y, 1)
@@ -12,8 +12,8 @@ function Ball:new(x, y, w, h)
     self.state = "init"
 end
 
--------------------------------
--------------------------------
+
+
 
 function Ball:update(dt)
     Ball:super().update(self, dt)
@@ -31,8 +31,8 @@ function Ball:draw()
     lg.setColor(r, g, b, a)
 end
 
--------------------------------
--------------------------------
+
+
 
 function Ball:moveRight(speed, dt)
     self.x = self.x + speed * dt
