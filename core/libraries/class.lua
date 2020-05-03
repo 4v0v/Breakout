@@ -3,7 +3,7 @@ function Class:new() end
 function Class:extend(className) 
     local obj = {}
         obj.__super    = self
-        obj.__class    = className or "Object"
+        obj.__class    = className or 'Object'
         obj.__tostring = self.__tostring
         obj.__call     = self.__call
         obj.__index    = obj

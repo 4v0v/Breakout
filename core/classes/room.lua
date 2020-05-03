@@ -1,7 +1,4 @@
-Room = Class:extend("Room")
-
-
-
+Room = Class:extend('Room')
 
 function Room:new()
     self.timer   = Timer()
@@ -40,9 +37,9 @@ end
 
 function Room:add(t, e)
     local tag, entity
-    if type(t) == "table" then tag = nil; entity = t else tag = t; entity = e end
-    entity.__id    = tools.uuid()
-    entity.__tag   = tag or entity:class() .. "_" .. entity.__id
+    if type(t) == 'table' then tag = nil; entity = t else tag = t; entity = e end
+    entity.__id    = tools.uid()
+    entity.__tag   = tag or entity:class() .. '_' .. entity.__id
     entity.__room  = self
     self.__queue[entity:tag()] = entity
     return entity
@@ -56,14 +53,14 @@ function Room:mgr() return self.__mgr end
 
 function Room:foreach(filter, func)
     for _, entity in pairs(self.__ents) do
-        if type(filter) == "table" then 
+        if type(filter) == 'table' then 
             for _, class in pairs(filter) do 
-                if entity:class() == class then func(entity) end
+                if entity:class() == class then func(entity, entity:tag(), entity:class()) end
             end
-        elseif type(filter) == "string" and filter == "All" then 
-            func(entity) 
-        elseif type(filter) == "string" then 
-            if entity:class() == filter then func(entity) end
+        elseif type(filter) == 'string' and filter == 'All' then 
+            func(entity, entity:tag(), entity:class()) 
+        elseif type(filter) == 'string' then 
+            if entity:class() == filter then func(entity, entity:tag(), entity:class()) end
         end
     end
 end

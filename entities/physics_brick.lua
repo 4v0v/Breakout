@@ -1,4 +1,4 @@
-Physics_Brick = Entity:extend("Physics_Brick")
+Physics_Brick = Entity:extend('Physics_Brick')
 
 
 

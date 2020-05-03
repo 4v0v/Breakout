@@ -1,4 +1,4 @@
-Highscore_Room = Room:extend("Highscore_Room")
+Highscore_Room = Room:extend('Highscore_Room')
 
 
 
@@ -15,9 +15,9 @@ end
 function Highscore_Room:update(dt)
     Highscore_Room:super().update(self, dt)
 
-    if pressed("return") or pressed("space") then 
+    if pressed('return') or pressed('space') then 
         if self.selection == 1 then 
-            room_mgr:changeRoom("menu_room")
+            room_mgr:change_room('menu_room')
             love.audio.play(back_sound:clone())
         end
     end
@@ -26,7 +26,7 @@ end
 function Highscore_Room:draw()
     Highscore_Room:super().draw(self)
 
-    lg.print("return", WIDTH/2 -100 , HEIGHT/2 - 200 + 10, _, 2, 2)
+    lg.print('return', lg.getWidth()/2 -100 , lg.getHeight()/2 - 200 + 10, _, 2, 2)
 
-    if self.selection == 1 then lg.rectangle("line", WIDTH/2 -100, HEIGHT/2 - 200 + 10, 100, 34) end
+    if self.selection == 1 then lg.rectangle('line', lg.getWidth()/2 -100, lg.getHeight()/2 - 200 + 10, 100, 34) end
 end

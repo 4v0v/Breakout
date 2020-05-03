@@ -1,4 +1,4 @@
-Seeyou_Room = Room:extend("Seeyou_Room")
+Seeyou_Room = Room:extend('Seeyou_Room')
 
 
 
@@ -21,5 +21,5 @@ end
 function Seeyou_Room:draw()
     Seeyou_Room:super().draw(self)
 
-    lg.print("See you soon!", WIDTH/2 -100 , HEIGHT/2 - 200 + 10, _, 2, 2)
+    lg.print('See you soon!', lg.getWidth()/2 -100 , lg.getHeight()/2 - 200 + 10, _, 2, 2)
 end

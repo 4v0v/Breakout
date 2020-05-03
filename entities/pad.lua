@@ -1,4 +1,4 @@
-Pad = Entity:extend("Pad")
+Pad = Entity:extend('Pad')
 
 
 
@@ -19,7 +19,7 @@ end
 function Pad:draw()
     local r,g,b,a = lg.getColor()
     lg.setColor(1,1,0)
-    lg.rectangle("fill", self.x, self.y, self.w, self.h)
+    lg.rectangle('fill', self.x, self.y, self.w, self.h)
     lg.setColor(r, g, b, a)
 end
 

@@ -1,4 +1,4 @@
-Brick = Entity:extend("Brick")
+Brick = Entity:extend('Brick')
 
 function Brick:new(x, y, w, h)
     Brick:super().new(self, x, y, 1)
@@ -20,9 +20,6 @@ end
 function Brick:draw()
     local r,g,b,a = lg.getColor()
     lg.setColor(0,1,0)
-    lg.push()
-    lg.setCanvas(self.canvas)
-    lg.rectangle("line", self.x - self.sine:value(), self.y - self.sine:value(), self.w + self.sine:value()* 2, self.h + self.sine:value()* 2)
-    lg.pop()
+    lg.rectangle('line', self.x - self.sine:value(), self.y - self.sine:value(), self.w + self.sine:value()* 2, self.h + self.sine:value()* 2)
     lg.setColor(r, g, b, a)
 end

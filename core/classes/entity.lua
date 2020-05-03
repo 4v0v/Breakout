@@ -1,7 +1,4 @@
-Entity = Class:extend("Entity")
-
-
-
+Entity = Class:extend('Entity')
 
 function Entity:new(x, y, z)
     self.timer  = Timer()
@@ -14,9 +11,6 @@ function Entity:new(x, y, z)
     self.y = y or 0
     self.z = z or 0
 end
-
-
-
 
 function Entity:init() end
 function Entity:update(dt) self.timer:update(dt) end

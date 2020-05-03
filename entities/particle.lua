@@ -1,15 +1,9 @@
-Particles = Entity:extend("Particles")
-
-
-
+Particles = Entity:extend('Particles')
 
 function Particles:new(x, y, img)
     Particles:super().new(self, x, y, 1)
-    self.particles = love.graphics.newParticleSystem(img)
+    self.particles = lg.newParticleSystem(img)
 end
-
-
-
 
 function Particles:update(dt)
     Particles:super().update(self, dt)
@@ -17,5 +11,5 @@ function Particles:update(dt)
 end
 
 function Particles:draw()
-    love.graphics.draw(self.particles, self.x, self.y)
+    lg.draw(self.particles, self.x, self.y)
 end

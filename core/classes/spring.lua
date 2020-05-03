@@ -1,4 +1,4 @@
-Spring = Class:extend("Spring")
+Spring = Class:extend('Spring')
 
 
 

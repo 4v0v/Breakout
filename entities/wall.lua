@@ -1,4 +1,4 @@
-Wall = Entity:extend("Wall")
+Wall = Entity:extend('Wall')
 
 function Wall:new(x, y, w, h)
     Wall:super().new(self, x, y, 1)
@@ -17,6 +17,6 @@ end
 function Wall:draw()
     local r,g,b,a = lg.getColor()
     lg.setColor(0,1,1)
-    lg.rectangle("fill", self.spring_x:value(), self.spring_y:value(), self.w, self.h)
+    lg.rectangle('fill', self.spring_x:value(), self.spring_y:value(), self.w, self.h)
     lg.setColor(r, g, b, a)
 end

@@ -1,4 +1,4 @@
-Trail = Entity:extend("Trail")
+Trail = Entity:extend('Trail')
 
 
 
@@ -44,16 +44,16 @@ function Trail:update(dt)
     -- visual
     table.remove( self.trail )
     table.remove( self.trail )
-    table.insert( self.trail,1, math.ceil(self.pos["y"]))
-    table.insert( self.trail,1, math.ceil(self.pos["x"]))
+    table.insert( self.trail,1, math.ceil(self.pos['y']))
+    table.insert( self.trail,1, math.ceil(self.pos['x']))
 
     -- prevent visual bug on creation
-    if type(self.visible) == "number" then self.visible = self.visible - 1 end
+    if type(self.visible) == 'number' then self.visible = self.visible - 1 end
     if self.visible == 0 then self.visible = true end
 
     -- non instant deletion
-    if tools.oequal(self.pos.x, self.t.x, 7) and tools.oequal(self.pos.y, self.t.y, 15) then 
-        if type(self.begin_deletion) == "number" then 
+    if tools.almost(self.pos.x, self.t.x, 7) and tools.almost(self.pos.y, self.t.y, 15) then 
+        if type(self.begin_deletion) == 'number' then 
             self.begin_deletion = self.begin_deletion - 1 
             if self.begin_deletion == 0 then self.begin_deletion = true end
         end
