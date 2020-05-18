@@ -55,69 +55,82 @@ function Play_Room:update(dt)
     self.world:update(dt)
 
     if self.state == 'begin' then 
-        if pressed('return') or pressed('space') then self.state = 'play' end
+        if pressed('return') || pressed('space') then self.state = 'play' end
     
     elseif self.state == 'loose' then 
-        if pressed('return') or pressed('space') then room_mgr:change_room('menu_room') end
+        if pressed('return') || pressed('space') then room_mgr:change_room_with_transition('menu_room') end
 
     elseif self.state == 'play' then 
         local pad = self:get('pad')
         local ball = self:get('ball')
 
-        pad.x = ball.x + ball.w/2 - pad.w/2
-
         if down('left') then
-            if ball.state == 'init' then ball:moveLeft(500, dt) end
-            pad:moveLeft(500, dt) 
+            pad:move(-500, _, dt) 
+            if ball && ball.state == 'init' then ball:move(pad:cx() - ball.w/2, _) end
         end
         if down('right') then 
-            if ball.state == 'init' then ball:moveRight(500, dt) end
-            pad:moveRight(500, dt) 
+            pad:move(500, _, dt) 
+            if ball && ball.state == 'init' then ball:move(pad:cx() - ball.w/2, _) end
         end
 
-        if pressed('space') then self:get('ball'):launch(500, -500)  end
+        if pressed('space') && ball and ball.state == 'init' then 
+            self:get('ball'):launch(math.rad(45)) 
+        end
 
         self:foreach('Ball', function(ball)
+            if ball.y > lg.getHeight() || ball.y < 0 then 
+                ball:kill()
+                if self:count('Ball') == 0 then
+                    self:add('ball', Ball(pad:cx() - 10, 530, 20, 20))
+                end
+            end
             self:foreach({'Wall', 'Pad', 'Brick'}, function(entity)
                 local coll, dir = tools.rectRect(ball.x, ball.y, ball.w, ball.h, entity.x, entity.y, entity.w, entity.h)
 
-                if not coll or ball.state == 'init' then return end
+                if not coll || ball.state == 'init' then return end
 
-                if entity:class() == 'Wall' then 
+                if entity:class() == 'Pad' then 
+                    -- if dir == 'bottom' then 
+                    --     local half_length = entity.w/2
+                    --     local normal = (ball.x - entity.x) / (half_length)
+                    --     ball:setAngle(math.atan2(-math.sin(ball.angle), normal))
+                    -- end
+
+                elseif  entity:class() == 'Wall' then 
                     love.audio.play(Play_Room.bump_sound:clone())
 
                     if entity:tag() == 'left'   then entity.spring_x:pull(10) end
                     if entity:tag() == 'top'    then entity.spring_y:pull(10) end
                     if entity:tag() == 'right'  then entity.spring_x:pull(-10) end
-                    if entity:tag() == 'bottom' then 
+                    if entity:tag() == 'bottom' then
+                        ball:kill()
                         entity.spring_y:pull(-10)
-                        if self.lives == 0 then 
-                            love.audio.play(Play_Room.death_sound:clone())
-                            self:foreach('All', function(entity) entity:kill() end)
-                            self.state = 'loose'
-                        else
-                            self.lives = self.lives - 1
-                            self:get('pad'):kill()
-                            self:get('ball'):kill()
-                            self:add('pad', Pad(300, 550, 200, 20))
-                            self:add('ball', Ball(390, 530, 20, 20))
+                        if self:count('Ball') == 0 then 
+                            if self.lives == 0 then 
+                                love.audio.play(Play_Room.death_sound:clone())
+                                self:foreach('All', function(entity) entity:kill() end)
+                                self.state = 'loose'
+                            else
+                                self.lives = self.lives - 1
+                                self:foreach({'Ball', 'Bonus'}, function(entity) entity:kill() end)
+                                self:add('ball', Ball(pad:cx() - 10, 530, 20, 20))
+                            end                    
                         end
                     end
-                end
 
-                if entity:class() == 'Brick' then
-                    self.score = self.score + 1
+                elseif entity:class() == 'Brick' then
+                    self.score++
                     shake:add_shake(5)
                     shockwave:add_shockwave(ball.x, ball.y)
                     chroma:add_aberration()
 
-                    self:add(Physics_Brick(self.world, ball.xSpeed, ball.ySpeed, entity.x + entity.w/2, entity.y + entity.h/2, entity.w, entity.h))
-                    self:add(Brick_Particles(entity.x + entity.w/2, entity.y + entity.h/2))
-                    self:add(Bonus(entity.x + entity.w/2, entity.y + entity.h/2))
+                    self:add(Physics_Brick(self.world, math.cos(ball.angle) * 500, math.sin(ball.angle) * 500, entity.x, entity.y, entity.w, entity.h))
+                    self:add(Brick_Particles(entity:cx(), entity:cy()))
+                    self:add(Bonus(entity:cx(), entity:cy(), tools.random("extraball", "addwidth", "shoot")))
                     love.audio.play(Play_Room.ding_sound:clone())
                     entity:kill()
 
-                    if self:count('Brick') == 1 and self.lives > 0 then
+                    if self:count('Brick') == 0 and self.lives > 0 then
                         if self.current_level < #self.levels then 
                             self.current_level = self.current_level + 1 
                         else 
@@ -127,10 +140,19 @@ function Play_Room:update(dt)
                     end
                 end
 
-                if dir == 'bottom' then ball:setYSpeed(-500) end
-                if dir == 'top'    then ball:setYSpeed(500)  end
-                if dir == 'left'   then ball:setXSpeed(500)  end
-                if dir == 'right'  then ball:setXSpeed(-500) end
+                if dir == 'bottom' then 
+                    ball:setAngle(math.atan2(-math.sin(ball.angle), math.cos(ball.angle)))
+                    ball:move(_, entity.y - ball.h)
+                elseif dir == 'top' then 
+                    ball:setAngle(math.atan2(-math.sin(ball.angle), math.cos(ball.angle)))
+                    ball:move(_, entity.y + entity.h)
+                elseif dir == 'left' then 
+                    ball:setAngle(math.atan2(math.sin(ball.angle), -math.cos(ball.angle)))
+                    ball:move(entity.x + ball.h, _)
+                elseif dir == 'right' then 
+                    ball:setAngle(math.atan2(math.sin(ball.angle), -math.cos(ball.angle))) 
+                    ball:move(entity.x - ball.h, _)
+                end
             end)
         end)
 
@@ -142,13 +164,26 @@ function Play_Room:update(dt)
                 if entity:tag() == 'bottom' then
                     bonus:kill()
                 elseif entity:tag() == 'pad' then 
-                    local b = Ball(10, 10, 20, 20)
-                    self:add(b)
-                    b:launch(500, 500)
+                    print(bonus.type)
+                    if bonus.type == "extraball" then 
+                        if self:count('Ball') < 10 then 
+
+                            self:foreach('Ball', fn(ball) 
+                                local b = Ball(ball.x, ball.y, ball.w, ball.h)
+                                self:add(b)
+                                local c,s = math.cos(ball.angle), math.sin(ball.angle)
+                                b:launch(math.atan2(s, -c))
+                            end)
+
+                        end
+                    elseif bonus.type == "addwidth" then
+                        entity.w = entity.w + 10
+                    end
                     bonus:kill()
                 end
             end)
         end)
+
     end
 end
 

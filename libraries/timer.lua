@@ -44,9 +44,10 @@ end
 local function _rand(t) if type(t) == 'number' then return t elseif type(t) == 'table' then local x = (t[1] > t[2] and (love.math.random()*(t[1] - t[2]) + t[2])) or (love.math.random()*(t[2] -  t[1]) +  t[1]) return x end end
 local function _uid() return ('xxxxxxxxxxxxxxxx'):gsub('[x]', function() local r = math.random(16) return ('0123456789ABCDEF'):sub(r, r) end) end
 --###########################--
+
 function Timer:update(dt)
     for tag, v in pairs(self.timers) do
-        if v.status == 'play' then 
+        if v.status == 'play'then 
             v.t = v.t + dt
             if v.type == 'after' then 
                 if v.t >= v.total then v.action(); v.after(); self.timers[tag] = nil end
@@ -58,12 +59,12 @@ function Timer:update(dt)
 
             elseif v.type == 'every' then  
                 if v.c == 0 or v.t >= v.total then
-		        if v.c == 0 then v.t = v.total end -- first loop 
-                v.action()
-                v.c = v.c + 1
-                v.t = v.t - v.total
-                v.total = _rand(v.any_total)
-                if v.c == v.count then v.after(); self.timers[tag] = nil end
+                    if v.c == 0 then v.t = v.total end -- first loop 
+                    v.action()
+                    v.c = v.c + 1
+                    v.t = v.t - v.total
+                    v.total = _rand(v.any_total)
+                    if v.c == v.count then v.after(); self.timers[tag] = nil end
                 end
 
             elseif v.type == 'tween' then
@@ -80,12 +81,10 @@ function Timer:update(dt)
         end
     end
 end
-function Timer:after(time, action, a, b)
-    local tag, after
-    if     type(a) == 'nil'      and type(b) == 'nil'    then after, tag = function() end, _uid() 
-    elseif type(a) == 'string'   and type(b) == 'nil'    then after, tag = function() end, a      
-    elseif type(a) == 'function' and type(b) == 'nil'    then after, tag = a      , _uid() 
-    elseif type(a) == 'function' and type(b) == 'string' then after, tag = a      , b      end
+
+function Timer:after(time, action, tag, after)
+    local tag = tag or _uid()
+    local after = after or function() end
     if self.timers[tag] then return false end
 
     self.timers[tag] = {
@@ -98,18 +97,11 @@ function Timer:after(time, action, a, b)
     }
     return tag
 end
-function Timer:every(time, action, a, b, c)
-    local tag, after, count
-    if     type(a) == 'nil'      and type(b) == 'nil'      and type(c) == 'nil'    then after, count, tag = function() end, -1, _uid()
-    elseif type(a) == 'string'   and type(b) == 'nil'      and type(c) == 'nil'    then after, count, tag = function() end, -1, a     
-    elseif type(a) == 'number'   and type(b) == 'nil'      and type(c) == 'nil'    then after, count, tag = function() end,  a, _uid()     
-    elseif type(a) == 'function' and type(b) == 'nil'      and type(c) == 'nil'    then after, count, tag = a      , -1, _uid()     
-    elseif type(a) == 'number'   and type(b) == 'string'   and type(c) == 'nil'    then after, count, tag = function() end,  a, b     
-    elseif type(a) == 'function' and type(b) == 'string'   and type(c) == 'nil'    then after, count, tag = a      , -1, b     
-    elseif type(a) == 'function' and type(b) == 'number'   and type(c) == 'nil'    then after, count, tag = a      ,  b, _uid()
-    elseif type(a) == 'number'   and type(b) == 'function' and type(c) == 'nil'    then after, count, tag = b      ,  a, _uid()
-    elseif type(a) == 'function' and type(b) == 'number'   and type(c) == 'string' then after, count, tag = a      ,  b, c     
-    elseif type(a) == 'number'   and type(b) == 'function' and type(c) == 'string' then after, count, tag = b      ,  a, c      end
+
+function Timer:every(time, action, tag, count, after)
+    local tag = tag or _uid()
+    local after = after or function() end
+    local count = count or -1 
     if self.timers[tag] then return false end
 	
     self.timers[tag] = {
@@ -125,18 +117,11 @@ function Timer:every(time, action, a, b, c)
     }
     return tag
 end
-function Timer:during(time, action, a, b, c)
-    local tag, after, each
-    if     type(a) == 'nil'      and type(b) == 'nil'      and type(c) == 'nil'    then after, each, tag = function() end,  1, _uid()
-    elseif type(a) == 'string'   and type(b) == 'nil'      and type(c) == 'nil'    then after, each, tag = function() end,  1, a     
-    elseif type(a) == 'number'   and type(b) == 'nil'      and type(c) == 'nil'    then after, each, tag = function() end,  a, _uid()     
-    elseif type(a) == 'function' and type(b) == 'nil'      and type(c) == 'nil'    then after, each, tag = a      ,  1, _uid()     
-    elseif type(a) == 'number'   and type(b) == 'string'   and type(c) == 'nil'    then after, each, tag = function() end,  a, b     
-    elseif type(a) == 'function' and type(b) == 'string'   and type(c) == 'nil'    then after, each, tag = a      ,  1, b     
-    elseif type(a) == 'function' and type(b) == 'number'   and type(c) == 'nil'    then after, each, tag = a      ,  b, _uid()
-    elseif type(a) == 'number'   and type(b) == 'function' and type(c) == 'nil'    then after, each, tag = b      ,  a, _uid()
-    elseif type(a) == 'function' and type(b) == 'number'   and type(c) == 'string' then after, each, tag = a      ,  b, c     
-    elseif type(a) == 'number'   and type(b) == 'function' and type(c) == 'string' then after, each, tag = b      ,  a, c      end
+
+function Timer:during(time, action, tag, after, each)
+    local tag = tag or _uid()
+    local after = after or function() end
+    local each = each or 1 
     if self.timers[tag] then return false end
 	
     self.timers[tag] = {
@@ -151,12 +136,10 @@ function Timer:during(time, action, a, b, c)
     }
     return tag
 end
-function Timer:tween(time, subject, target, method, a, b)
-    local tag, after
-    if     type(a) == 'nil'      and type(b) == 'nil'    then after, tag = function() end, _uid() 
-    elseif type(a) == 'string'   and type(b) == 'nil'    then after, tag = function() end, a      
-    elseif type(a) == 'function' and type(b) == 'nil'    then after, tag = a      , _uid() 
-    elseif type(a) == 'function' and type(b) == 'string' then after, tag = a      , b      end
+
+function Timer:tween(time, subject, target, method, tag, after)
+    local tag = tag or _uid()
+    local after = after or function() end
     if self.timers[tag] then return false end
 
     self.timers[tag] = { 
@@ -175,7 +158,7 @@ function Timer:tween(time, subject, target, method, a, b)
 end
 
 function Timer:once(action, tag) return self:every(math.huge, action, tag) end
-function Timer:always(action, a, b)  return self:during(math.huge, action, a, b)  end
+function Timer:always(action, tag, after, each) return self:during(math.huge, action, tag, after, each)  end
 
 --###########################--
 function Timer:isTimer(tag) return not not self.timers[tag] end

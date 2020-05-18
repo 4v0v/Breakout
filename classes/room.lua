@@ -12,12 +12,6 @@ end
 function Room:update(dt)
     self.timer:update(dt)
 
-    for tag, entity in pairs(self.__queue) do
-        self.__ents[tag] = entity
-        entity:init()
-    end
-    self.__queue = {}
-
     for tag, entity in pairs(self.__ents) do
         entity:update(dt)
         if entity.__dead then
@@ -26,6 +20,12 @@ function Room:update(dt)
             self.__ents[tag] = nil
         end
     end
+
+    for tag, entity in pairs(self.__queue) do
+        self.__ents[tag] = entity
+        entity:init()
+    end
+    self.__queue = {}
 end
 
 function Room:draw()
@@ -53,16 +53,18 @@ function Room:mgr() return self.__mgr end
 
 function Room:foreach(filter, func)
     for _, entity in pairs(self.__ents) do
-        if type(filter) == 'table' then 
-            for _, class in pairs(filter) do 
-                if entity:class() == class then func(entity, entity:tag(), entity:class()) end
+        if !entity.__dead then 
+            if type(filter) == 'table' then 
+                for _, class in pairs(filter) do 
+                    if entity:class() == class then func(entity, entity:tag(), entity:class()) end
+                end
+            elseif type(filter) == 'string' and filter == 'All' then 
+                func(entity, entity:tag(), entity:class()) 
+            elseif type(filter) == 'string' then 
+                if entity:class() == filter then func(entity, entity:tag(), entity:class()) end
             end
-        elseif type(filter) == 'string' and filter == 'All' then 
-            func(entity, entity:tag(), entity:class()) 
-        elseif type(filter) == 'string' then 
-            if entity:class() == filter then func(entity, entity:tag(), entity:class()) end
         end
     end
 end
 
-function Room:count(filter) local count = 0; self:foreach(filter, function() count = count + 1 end); return count end
+function Room:count(filter) local count = 0; self:foreach(filter, function(e) if !e.__dead then count = count + 1 end end); return count end

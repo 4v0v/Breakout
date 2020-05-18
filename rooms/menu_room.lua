@@ -9,7 +9,7 @@ end
 function Menu_Room:enter()
     if not self.entered then 
         self.entered = true
-        love.audio.play(bg_calm:clone())
+        -- love.audio.play(bg_calm:clone())
     end
     self.selection = 1
 end
@@ -27,10 +27,10 @@ function Menu_Room:update(dt)
     end
 
     if pressed('return') or pressed('space') then 
-        if self.selection == 1 then room_mgr:change_room('play_room') end
-        if self.selection == 2 then room_mgr:change_room('option_room') end
-        if self.selection == 3 then room_mgr:change_room('highscore_room') end
-        if self.selection == 4 then room_mgr:change_room('seeyou_room') end
+        if self.selection == 1 then room_mgr:change_room_with_transition('play_room') end
+        if self.selection == 2 then room_mgr:change_room_with_transition('option_room') end
+        if self.selection == 3 then room_mgr:change_room_with_transition('highscore_room') end
+        if self.selection == 4 then room_mgr:change_room_with_transition('seeyou_room') end
     end
     
 end

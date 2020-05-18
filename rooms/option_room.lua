@@ -26,7 +26,7 @@ function Option_Room:update(dt)
         if self.selection == 1 then end
         if self.selection == 2 then end
         if self.selection == 3 then 
-            room_mgr:change_room('menu_room') 
+            room_mgr:change_room_with_transition('menu_room') 
             love.audio.play(back_sound:clone())
 
         end

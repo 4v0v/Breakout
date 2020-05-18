@@ -5,6 +5,8 @@ function Brick:new(x, y, w, h)
     self.w = w
     self.h = h
     self.sine = Sinewave(1, 3, 3)
+    self.cx = fn() return self.x + self.w/2 end
+    self.cy = fn() return self.y + self.y/2 end
 end
 
 function Brick:init()
