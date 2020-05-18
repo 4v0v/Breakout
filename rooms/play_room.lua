@@ -12,25 +12,12 @@ function Play_Room:new(roomMgr, tag)
     self.score = 0
     self.lives = 3
 
-    self.levels = {
-        {{0,0,0,0,0,0,0,0,0,0},
-         {0,0,0,0,0,0,0,0,0,0},
-         {0,0,0,0,0,0,0,0,0,0},
-         {0,0,0,0,0,0,0,0,0,0},
-         {0,0,0,0,0,0,0,0,0,1}},
 
-        {{1,1,1,1,1,1,1,1,1,1},
-         {1,1,1,0,0,0,0,1,1,1},
-         {1,1,1,0,0,0,0,1,1,1},
-         {1,1,1,0,0,0,0,1,1,1},
-         {1,1,1,1,1,1,1,1,1,1}},
-
-        {{1,1,1,1,1,1,1,1,1,1},
-         {1,1,1,1,1,1,1,1,1,1},
-         {1,1,1,1,1,1,1,1,1,1},
-         {1,1,1,1,1,1,1,1,1,1},
-         {1,1,1,1,1,1,1,1,1,1}}
-    }
+    self.levels = {}
+    local files = love.filesystem.getDirectoryItems('assets/levels')
+    for k,file in ipairs(files) do 
+        table.insert(self.levels, require('assets/levels/' .. file:gsub(".lua", "")))
+    end
 end
 
 
@@ -77,14 +64,14 @@ function Play_Room:update(dt)
             self:get('ball'):launch(math.rad(45)) 
         end
 
-        self:foreach('Ball', function(ball)
+        self:foreach('Ball', fn(ball)
             if ball.y > lg.getHeight() || ball.y < 0 then 
                 ball:kill()
                 if self:count('Ball') == 0 then
                     self:add('ball', Ball(pad:cx() - 10, 530, 20, 20))
                 end
             end
-            self:foreach({'Wall', 'Pad', 'Brick'}, function(entity)
+            self:foreach({'Wall', 'Pad', 'Brick'}, fn(entity)
                 local coll, dir = tools.rectRect(ball.x, ball.y, ball.w, ball.h, entity.x, entity.y, entity.w, entity.h)
 
                 if not coll || ball.state == 'init' then return end
@@ -108,11 +95,11 @@ function Play_Room:update(dt)
                         if self:count('Ball') == 0 then 
                             if self.lives == 0 then 
                                 love.audio.play(Play_Room.death_sound:clone())
-                                self:foreach('All', function(entity) entity:kill() end)
+                                self:foreach('All', fn(entity) entity:kill() end)
                                 self.state = 'loose'
                             else
                                 self.lives = self.lives - 1
-                                self:foreach({'Ball', 'Bonus'}, function(entity) entity:kill() end)
+                                self:foreach({'Ball', 'Bonus'}, fn(entity) entity:kill() end)
                                 self:add('ball', Ball(pad:cx() - 10, 530, 20, 20))
                             end                    
                         end
@@ -126,13 +113,16 @@ function Play_Room:update(dt)
 
                     self:add(Physics_Brick(self.world, math.cos(ball.angle) * 500, math.sin(ball.angle) * 500, entity.x, entity.y, entity.w, entity.h))
                     self:add(Brick_Particles(entity:cx(), entity:cy()))
-                    self:add(Bonus(entity:cx(), entity:cy(), tools.random("extraball", "addwidth", "shoot")))
+                    for i = 1, tools.random(10) do
+                        self:add(Trail(entity:cx(), entity:cy()))
+                    end
+                    self:add(Bonus(entity:cx(), entity:cy(), tools.random("extraball", "addwidth")))
                     love.audio.play(Play_Room.ding_sound:clone())
                     entity:kill()
 
-                    if self:count('Brick') == 0 and self.lives > 0 then
+                    if self:count('Brick') == 0 and self.lives >= 0 then
                         if self.current_level < #self.levels then 
-                            self.current_level = self.current_level + 1 
+                            self.current_level++
                         else 
                             self.current_level = 1 
                         end
@@ -156,25 +146,20 @@ function Play_Room:update(dt)
             end)
         end)
 
-        self:foreach('Bonus', function(bonus)
-            self:foreach({'Wall', 'Pad'}, function(entity) 
+        self:foreach('Bonus', fn(bonus)
+            self:foreach({'Wall', 'Pad'}, fn(entity) 
                 local coll, dir = tools.rectRect(bonus.x, bonus.y, bonus.w, bonus.h, entity.x, entity.y, entity.w, entity.h)
                 if not coll then return end
     
                 if entity:tag() == 'bottom' then
                     bonus:kill()
                 elseif entity:tag() == 'pad' then 
-                    print(bonus.type)
                     if bonus.type == "extraball" then 
                         if self:count('Ball') < 10 then 
-
                             self:foreach('Ball', fn(ball) 
-                                local b = Ball(ball.x, ball.y, ball.w, ball.h)
-                                self:add(b)
-                                local c,s = math.cos(ball.angle), math.sin(ball.angle)
-                                b:launch(math.atan2(s, -c))
+                                local b = self:add(Ball(ball.x, ball.y, ball.w, ball.h))
+                                b:launch(math.atan2(math.sin(ball.angle), -math.cos(ball.angle)))
                             end)
-
                         end
                     elseif bonus.type == "addwidth" then
                         entity.w = entity.w + 10
@@ -182,6 +167,10 @@ function Play_Room:update(dt)
                     bonus:kill()
                 end
             end)
+        end)
+
+        self:foreach('Trail', fn(trail)
+            trail:set_target(pad:cx(), pad:cy())
         end)
 
     end

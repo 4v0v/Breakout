@@ -5,6 +5,7 @@ function Pad:new(x, y, w, h)
     self.w = w
     self.h = h
     self.cx = fn() return self.x + self.w/2 end
+    self.cy = fn() return self.y + self.h/2 end
 end
 
 function Pad:update(dt)
