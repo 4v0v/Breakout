@@ -35,8 +35,6 @@ function love.run()
     love.timer.step()
 
     return function()
-        -- if love.timer.step() > 0.2 then return end -- prevent screen grabbing
-
         -- EVENTS --
         love.event.pump()
         for name,a,b,c,d,e,f in love.event.poll() do
@@ -61,7 +59,7 @@ function love.run()
         lg.clear(lg.getBackgroundColor())
         love.draw()
         lg.present()
-		love.timer.sleep(0.001)
+        love.timer.sleep(0.001)
     end
 end
 
@@ -101,4 +99,5 @@ function love.draw()
     MAIN_CANVAS = camera:get_canvas(MAIN_CANVAS)
 
     lg.draw(MAIN_CANVAS, 0, 0)
+
 end

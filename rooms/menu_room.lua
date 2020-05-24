@@ -37,14 +37,14 @@ end
 
 function Menu_Room:draw()
     Menu_Room:super().draw(self)
-
+    
     lg.draw(forest_bg, 0, 0, 0, lg.getWidth()/forest_bg:getWidth(), lg.getHeight()/forest_bg:getHeight())
-
+    
     lg.print('play', lg.getWidth()/2 -100 , lg.getHeight()/2 - 200 + 10, _, 2, 2)
     lg.print('menu', lg.getWidth()/2 -100 , lg.getHeight()/2 - 200 + 50, _, 2, 2)
     lg.print('highscores', lg.getWidth()/2 -100 , lg.getHeight()/2 - 200 + 90, _, 2, 2)
     lg.print('exit', lg.getWidth()/2 -100 , lg.getHeight()/2 - 200 + 130, _, 2, 2)
-
+    
     if self.selection == 1 then lg.rectangle('line', lg.getWidth()/2 -100, lg.getHeight()/2 - 200 + 10, 100, 34) end
     if self.selection == 2 then lg.rectangle('line', lg.getWidth()/2 -100, lg.getHeight()/2 - 200 + 50, 100, 34) end
     if self.selection == 3 then lg.rectangle('line', lg.getWidth()/2 -100, lg.getHeight()/2 - 200 + 90, 150, 34) end

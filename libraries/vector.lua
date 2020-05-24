@@ -33,6 +33,7 @@ function vec2.sub(a, b) return new(a.x - b.x, a.y - b.y) end
 function vec2.mul(a, b) return new(a.x * b.x, a.y * b.y) end
 function vec2.div(a, b) return new(a.x / b.x, a.y / b.y) end
 function vec2.normalize(a) if a:is_zero() then return new() end return a:scale(1 / a:len()) end
+function vec2.normalized(a) if a:is_zero() then return new() end return a:scale(1 / a:len()) end
 function vec2.trim(a, len) return a:normalize():scale(math.min(a:len(), len)) end
 function vec2.cross(a, b) return a.x * b.y - a.y * b.x end
 function vec2.dot(a, b) return a.x * b.x + a.y * b.y end

@@ -162,11 +162,23 @@ function Play_Room:update(dt)
                             end)
                         end
                     elseif bonus.type == "addwidth" then
-                        entity.w = entity.w + 10
+                        if entity.w < 500 then 
+                            entity.w = entity.w + 10
+                        end
                     end
                     bonus:kill()
                 end
             end)
+        end)
+
+        self:foreach('Wall', fn(wall) 
+            if wall:tag() == 'left' || wall:tag() == 'right' then 
+                local coll, dir = tools.rectRect(pad.x, pad.y, pad.w, pad.h, wall.x, wall.y, wall.w, wall.h)
+                if coll then 
+                    if dir == 'left' then pad.x = wall.x + wall.w end
+                    if dir == 'right' then pad.x = wall.x - pad.w end
+                end
+            end
         end)
 
         self:foreach('Trail', fn(trail)
